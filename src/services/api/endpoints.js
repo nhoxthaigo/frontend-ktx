@@ -63,8 +63,8 @@ export const API_ENDPOINTS = {
   BED: {
     GET_ALL_BEDS_BY_ROOM_ID: (roomId) => `/rooms/rooms/${roomId}/beds`,
     CREATE: (roomId) => `/rooms/rooms/${roomId}/beds`,
-    UPDATE: (roomId, bedId) => `rooms/rooms/${roomId}/beds/${bedId}`, // <-- FIX: Add roomId parameter
-    DELETE: (roomId, bedId) => `rooms/rooms/${roomId}/beds/${bedId}`, // <-- FIX: Add roomId parameter and use bedId for consistency
+    UPDATE: (roomId, bedId) => `/rooms/rooms/${roomId}/beds/${bedId}`, // <-- FIX: Add roomId parameter
+    DELETE: (roomId, bedId) => `/rooms/rooms/${roomId}/beds/${bedId}`, // <-- FIX: Add roomId parameter and use bedId for consistency
   },
   TOPIC: {
     GET_ALL: "/topics/topics",
@@ -92,10 +92,12 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (id) => `/room-allocations/${id}`,
   },
 
-  PAYMENT: {
-    GET_DETAILS: (allocationId) => `/payments/${allocationId}`,
-    CREATE_CHECKOUT: (allocationId) => `/payments/${allocationId}/checkout`,
-  },
+  INVOICE: {
+  GET_ALL: "/invoices",
+  GET_MY: "/invoices/my",
+  GET_ONE: id => `/invoices/${id}`,
+  CHECKOUT: id => `/invoices/${id}/checkout`,
+},
   ACTIVE_ALLOCATION: "/room-allocations/active", // trả về { id_allocation }
 };
 

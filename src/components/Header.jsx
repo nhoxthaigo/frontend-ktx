@@ -11,14 +11,14 @@ const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(() => authService.getUserInfo()); // ⭐
-  
- /* Cập nhật user nếu tab khác login/logout */
+
+  /* Cập nhật user nếu tab khác login/logout */
   useEffect(() => {
     const sync = () => setUser(authService.getUserInfo());
     window.addEventListener("storage", sync);
     return () => window.removeEventListener("storage", sync);
   }, []);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       setHideLogo(window.scrollY > 100);
@@ -95,10 +95,15 @@ const Header = () => {
                 </a>
               </>
             ) : (
-              <button onClick={() => setShowProfile(true)}>
-                
-                <CircleUser className="w-7 h-7 hover:text-orange-600" />
-              </button>
+              <div className="flex items-center ">
+                <button onClick={() => setShowProfile(true)}>
+                  <CircleUser className="w-7 h-7 hover:text-orange-600" />
+                </button>
+                {/* <div className="p">
+                  xin chào, {user.ten || user.username}
+                </div> */}
+              </div>
+
             )}
           </div>
 

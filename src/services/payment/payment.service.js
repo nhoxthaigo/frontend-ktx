@@ -4,7 +4,10 @@ import { API_ENDPOINTS } from "../api/endpoints";
 
 export const paymentService = {
 
-    getActiveAllocation: () => apiClient.get(API_ENDPOINTS.ACTIVE_ALLOCATION),
+    getActiveAllocation: async () => {
+        const res = await apiClient.get(API_ENDPOINTS.ACTIVE_ALLOCATION);
+        return res.data;               // { id_allocation }
+    },
     /**
      * Lấy thông tin thanh toán cho một phân bổ phòng
      * (dùng để render RoomPaymentDetails trước khi thanh toán)
@@ -13,7 +16,7 @@ export const paymentService = {
         const res = await apiClient.get(
             API_ENDPOINTS.PAYMENT.GET_DETAILS(allocationId)
         );
-        return res.data;               // { data: { allocation, … } }
+        return res.data.data; // Trả về trực tiếp object { allocation, ... }
     },
 
     /**

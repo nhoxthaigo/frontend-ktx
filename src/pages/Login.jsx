@@ -60,26 +60,24 @@ const Login = () => {
       const { accessToken, refreshToken } = response.data.tokens;
       const rawUser = response.data.user;
 
-      authService.setToken(accessToken);          // ⭐
+      authService.setToken(accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
       let activeAllocationId = null;
+
       if (userType === ROLE.STUDENT) {
         try {
-          const { data } = await paymentService.getActiveAllocation();
-          activeAllocationId = data.data.id_allocation;   // { data: { id_allocation } }
+          // service đã được sửa trả res.data = { id_allocation }
+          const { id_allocation } = await paymentService.getActiveAllocation();
+          activeAllocationId = id_allocation ?? null;
         } catch (e) {
-          // có thể log hoặc bỏ qua; sinh viên chưa có phân bổ cũng OK
+          console.error("getActiveAllocation error:", e); // log là đủ, SV chưa có phòng cũng OK
         }
       }
-      // authService.setUserInfo(response.data.user, userType);
-      authService.setUserInfo(
-        { ...rawUser, activeAllocationId },
-        userType
-      );
 
-      if (rawUser.role === "admin") navigate("/admin");
-      else navigate("/");
+      authService.setUserInfo({ ...rawUser, activeAllocationId }, userType);
+
+      navigate(rawUser.role === "admin" ? "/admin" : "/");
     } else {
       alert(response.message || "Đăng nhập không thành công. Vui lòng thử lại.");
     }
