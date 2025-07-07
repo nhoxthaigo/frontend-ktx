@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import UserLayout from './layouts/UserLayout';
 import AuthLayout from './layouts/AuthLayout';
 import HomePage from './pages/HomePage';
@@ -28,11 +29,11 @@ import ScrollToTop from "./components/ScrollToTop";
 import SetupPassword from "./components/Auth/SetupPassword";
 import ProfileUser from "./pages/UserProfile";
 import RoomPaymentDetails from "./components/RoomPaymentDetails"; // Import RoomPaymentDetails component
+import StudentElectricBills from "./components/StudentElectricBills";
 function App() {
   return (
     <>
       <Router>
-
         <ScrollToTop />
         <Routes>
           {/* Các trang có header/footer */}
@@ -42,6 +43,7 @@ function App() {
             <Route path="room/:id" element={<RoomDetailPage />} />
             <Route path="topic" element={<Topic />} />
             <Route path="topic/:id" element={<TopicDescription />} />
+            <Route path="electric-bills" element={<StudentElectricBills />} />
           </Route>
 
           {/* Các trang không header/footer */}
@@ -70,6 +72,28 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      
+      {/* Toast notifications */}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            style: {
+              background: '#10b981',
+            },
+          },
+          error: {
+            style: {
+              background: '#ef4444',
+            },
+          },
+        }}
+      />
     </>
 
   );
