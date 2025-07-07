@@ -64,14 +64,16 @@ const Header = () => {
             <a href="/" className="transition duration-300 hover:text-orange-600">
               Trang Chủ
             </a>
-            <a href="/" className="transition duration-300 hover:text-orange-600">
+            <a href="/room" className="transition duration-300 hover:text-orange-600">
               Phòng
             </a>
-            <a href="/" className="transition duration-300 hover:text-orange-600">
-              Dịch Vụ
-            </a>
-            <a href="/" className="transition duration-300 hover:text-orange-600">
-              Hỗ Trợ
+            {user && (
+              <a href="/electric-bills" className="transition duration-300 hover:text-orange-600">
+                Hóa đơn điện
+              </a>
+            )}
+            <a href="/topic" className="transition duration-300 hover:text-orange-600">
+              Tin tức
             </a>
             <a href="/" className="transition duration-300 hover:text-orange-600">
               Liên Hệ
@@ -139,14 +141,16 @@ const Header = () => {
           <a href="/" className="hover:text-orange-600">
             Trang Chủ
           </a>
-          <a href="/" className="hover:text-orange-600">
+          <a href="/room" className="hover:text-orange-600">
             Phòng
           </a>
-          <a href="/" className="hover:text-orange-600">
-            Dịch Vụ
-          </a>
-          <a href="/" className="hover:text-orange-600">
-            Hỗ Trợ
+          {user && (
+            <a href="/electric-bills" className="hover:text-orange-600">
+              Hóa đơn điện
+            </a>
+          )}
+          <a href="/topic" className="hover:text-orange-600">
+            Tin tức
           </a>
           <a href="/" className="hover:text-orange-600">
             Liên Hệ
