@@ -63,20 +63,23 @@ export default function RoomPaymentDetail() {
     try {
       setIsPaying(true);
       setShowDetailModal(false);
-      const res = await invoiceService.checkout(selectedInvoice.Allocation.id);
-      if (res.checkoutUrl && res.qrCode && res.orderCode) {
-        setPaymentInfo({
-          checkoutUrl: res.checkoutUrl,
-          qrCode: res.qrCode,
-          orderCode: res.orderCode,
-          amount: selectedInvoice.so_tien_thanh_toan,
-        });
-        setShowQRModal(true);
-        startCountdown();
-        startPolling();
-      } else {
+
+      const data = await invoiceService.checkout(selectedInvoice.Allocation.id);
+      // data = { checkoutUrl, qrCode, orderCode, expireIn }
+
+      if (!data.checkoutUrl || !data.qrCode || !data.orderCode) {
         throw new Error("Thiếu dữ liệu từ server.");
       }
+
+      setPaymentInfo({
+        checkoutUrl: data.checkoutUrl,
+        qrCode: data.qrCode,
+        orderCode: data.orderCode,
+        amount: selectedInvoice.so_tien_thanh_toan,
+      });
+      setShowQRModal(true);
+      startCountdown();
+      startPolling();
     } catch (err) {
       alert(err?.message || "Không thể khởi tạo thanh toán.");
       setIsPaying(false);
@@ -133,40 +136,50 @@ export default function RoomPaymentDetail() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 text-sm">
-            {invoices.map((inv) => (
-              <tr key={inv.id}>
-                <td className="px-4 py-2">{inv.id}</td>
-                <td className="px-4 py-2">{inv.Allocation?.Bed?.Room?.ten_phong}</td>
-                <td className="px-4 py-2">{inv.Allocation?.Bed?.ten_giuong}</td>
-                <td className="px-4 py-2">{inv.Allocation?.ngay_bat_dau?.slice(0, 10)}</td>
-                <td className="px-4 py-2">{inv.Allocation?.ngay_ket_thuc?.slice(0, 10)}</td>
-                <td className="px-4 py-2 text-orange-600 font-medium">
-                  {currencyFormat(inv.so_tien_thanh_toan)}
-                </td>
-                <td className="px-4 py-2">
-                  <span
-                    className={
-                      "px-3 py-1 rounded font-semibold " +
-                      (inv.Allocation?.trang_thai_thanh_toan
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700")
-                    }
-                  >
-                    {inv.Allocation?.trang_thai_thanh_toan ? "Đã thanh toán" : "Chưa thanh toán"}
-                  </span>
-                </td>
-                <td className="px-4 py-2 text-center">
-                  {inv.status !== "paid" && (
-                    <button
-                      onClick={() => handleViewDetail(inv.Allocation.id)}
-                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded"
+            {invoices.map((inv) => {
+              const isPaid = inv.status === "paid";   
+
+              return (
+                <tr key={inv.id}>
+                  <td className="px-4 py-2">{inv.id}</td>
+                  <td className="px-4 py-2">{inv.Allocation?.Bed?.Room?.ten_phong}</td>
+                  <td className="px-4 py-2">{inv.Allocation?.Bed?.ten_giuong}</td>
+                  <td className="px-4 py-2">
+                    {inv.Allocation?.ngay_bat_dau?.slice(0, 10)}
+                  </td>
+                  <td className="px-4 py-2">
+                    {inv.Allocation?.ngay_ket_thuc?.slice(0, 10)}
+                  </td>
+                  <td className="px-4 py-2 text-orange-600 font-medium">
+                    {currencyFormat(inv.so_tien_thanh_toan)}
+                  </td>
+
+                  {/* trạng thái */}
+                  <td className="px-4 py-2">
+                    <span
+                      className={`px-3 py-1 rounded font-semibold ${isPaid
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                        }`}
                     >
-                      Thanh toán
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
+                      {isPaid ? "Đã thanh toán" : "Chưa thanh toán"}
+                    </span>
+                  </td>
+
+                  {/* nút Thanh toán chỉ hiện khi chưa trả */}
+                  <td className="px-4 py-2 text-center">
+                    {!isPaid && (
+                      <button
+                        onClick={() => handleViewDetail(inv.Allocation.id)}
+                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded"
+                      >
+                        Thanh toán
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -238,7 +251,16 @@ export default function RoomPaymentDetail() {
               <div className="text-sm text-gray-700 space-y-2">
                 <p><strong>Mã đơn hàng:</strong> {paymentInfo.orderCode}</p>
                 <p><strong>Số tiền:</strong> {currencyFormat(paymentInfo.amount)}</p>
-                <p><strong>Thời gian còn lại:</strong> {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, "0")} phút</p>
+                <p>
+                  <strong>Thời gian còn lại:</strong>{" "}
+                  {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, "0")} phút
+                </p>
+                <div className="text-center mt-2 text-gray-500 text-sm flex justify-center items-center gap-1">
+                  Đang chờ xác nhận thanh toán
+                  <span className="animate-bounce">.</span>
+                  <span className="animate-bounce delay-200">.</span>
+                  <span className="animate-bounce delay-400">.</span>
+                </div>
               </div>
               <button
                 onClick={() => {

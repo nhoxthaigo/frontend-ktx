@@ -21,6 +21,8 @@ import TopicManager from "./components/Admin/TopicManager";
 import StaffManager from "./components/Admin/StaffManager";
 import RoomTypeManager from "./components/Admin/RoomTypeManager";
 import RoomPaymentManager from "./components/Admin/RoomPaymentManager";
+import CheckoutSuccess from "./pages/checkoutpayment/CheckoutSuccess";
+import CheckoutCancel from "./pages/checkoutpayment/CheckoutCancel";
 
 import Room from './components/Room'; // Import Room component
 import RoomDetailPage from "./pages/RoomDetailPage";
@@ -52,6 +54,9 @@ function App() {
           <Route path="/setup-password" element={<SetupPassword />} />
           <Route path="profile" element={<ProfileUser />} />
           <Route path="/payments/:allocationId" element={<RoomPaymentDetails />} /> {/* Route for RoomPaymentDetails */}
+
+          <Route path="/checkout-success" element={<CheckoutSuccess />} />
+          <Route path="/checkout-cancel" element={<CheckoutCancel />} />
           {/* Admin routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminHomePage />} />

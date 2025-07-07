@@ -18,20 +18,12 @@ export const invoiceService = {
     return response.data.invoice; // trả về đúng object invoice
   },
   checkout: (allocationId) =>
-    apiClient
-      .post(`/invoices/${allocationId}/checkout`)
-      .then((res) => {
-        // THÊM DÒNG LOG NÀY ĐỂ KIỂM TRA ĐỐI TƯỢNG 'res' ĐẦY ĐỦ
-        console.log("invoiceService: Full API response object (res):", res);
-        
-        // Đã sửa: 'res' chính là dữ liệu cần thiết, không cần res.data
-        if (res) { // Kiểm tra xem res (đối tượng dữ liệu) có tồn tại không
-          console.log("invoiceService: Returning data directly:", res);
-          return res; // Trả về res trực tiếp
-        } else {
-          console.error("invoiceService: Response data is undefined/null", res);
-          // Ném lỗi để bắt ở handleOnlinePayment nếu res không tồn tại
-          throw new Error("Dữ liệu phản hồi từ server không hợp lệ.");
-        }
-      }),
+  apiClient
+    .post(API_ENDPOINTS.INVOICE.CHECKOUT(allocationId))   // dùng hằng ENDPOINT cho nhất quán
+    .then((data) => {                                     // data chính là response.data
+      if (data.checkoutUrl && data.qrCode && data.orderCode) {
+        return data;          // <- trả thẳng object chứa checkoutUrl, qrCode, ...
+      }
+      throw new Error("Thiếu dữ liệu từ server.");
+    }),
 };
