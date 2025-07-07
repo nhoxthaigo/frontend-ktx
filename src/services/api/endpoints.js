@@ -34,7 +34,6 @@ export const API_ENDPOINTS = {
     CREATE: "/students/",
     UPDATE: (id) => `/students/${id}`,
     DELETE: (id) => `/students/${id}`,
-
   },
   STAFF: {
     GET_ALL: "/staff/",
@@ -93,12 +92,50 @@ export const API_ENDPOINTS = {
   },
 
   INVOICE: {
-  GET_ALL: "/invoices",
-  GET_MY: "/invoices/my",
-  GET_ONE: id => `/invoices/${id}`,
-  CHECKOUT: id => `/invoices/${id}/checkout`,
-},
+    GET_ALL: "/invoices",
+    GET_MY: "/invoices/my",
+    GET_ONE: (id) => `/invoices/${id}`,
+    CHECKOUT: (id) => `/invoices/${id}/checkout`,
+  },
+
+  // Electricity Management
+  ELECTRICITY: {
+    // Đơn giá điện
+    RATES: {
+      GET_ALL: "/electricity/rates",
+      CREATE: "/electricity/rates",
+    },
+
+    // Hóa đơn phòng
+    ROOM_BILLS: {
+      GET_ALL: "/electricity/room-bills",
+      CREATE: "/electricity/room-bills",
+      GET_BY_ID: (id) => `/electricity/room-bills/${id}`,
+      UPDATE: (id) => `/electricity/room-bills/${id}`,
+      DELETE: (id) => `/electricity/room-bills/${id}`,
+      CALCULATE: (id) => `/electricity/room-bills/${id}/calculate`,
+      FINALIZE: (id) => `/electricity/room-bills/${id}/finalize`,
+      BULK_CREATE: "/electricity/bulk-create",
+      BULK_FINALIZE: "/electricity/bulk/finalize",
+    },
+
+    // Hóa đơn sinh viên
+    STUDENT_BILLS: {
+      GET_ALL: "/electricity/student-bills",
+      PAYMENT: (id) => `/electricity/student-bills/${id}/payment`,
+      BULK_PAYMENT: "/electricity/bulk/payments",
+    },
+
+    // Thống kê
+    STATISTICS: "/electricity/statistics",
+    ADVANCED_STATISTICS: "/electricity/advanced-statistics",
+
+    // Export
+    EXPORT: {
+      EXCEL: "/electricity/export/excel",
+      PDF: "/electricity/export/pdf",
+    },
+  },
+
   ACTIVE_ALLOCATION: "/room-allocations/active", // trả về { id_allocation }
 };
-
-
