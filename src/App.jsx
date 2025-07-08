@@ -10,20 +10,13 @@ import TopicDescription from './components/TopicDescription';
 import AdminLayout from "./layouts/AdminLayout";
 import AdminHomePage from "./pages/AdminHomePage";
 
-import StudentManager from "./components/Admin/StudentManager";
-import StudentRequestManager from "./components/Admin/StudentRequestManager";
-import ElectricManager from "./components/Admin/ElectricManager";
-import PaymentManager from "./components/Admin/PaymentManager";
-import BedManager from "./components/Admin/BedManager";
-import RoomManager from "./components/Admin/RoomManager";
-import RoomAllocationManager from "./components/Admin/RoomAllocation";
-import NewsManager from "./components/Admin/NewsManager";
-import TopicManager from "./components/Admin/TopicManager";
-import StaffManager from "./components/Admin/StaffManager";
-import RoomTypeManager from "./components/Admin/RoomTypeManager";
-import RoomPaymentManager from "./components/Admin/RoomPaymentManager";
+
 import CheckoutSuccess from "./pages/checkoutpayment/CheckoutSuccess";
 import CheckoutCancel from "./pages/checkoutpayment/CheckoutCancel";
+import RoomManagement from "./components/Admin/RoomManagement/RoomManagement";
+import NewsManagement from "./components/Admin/NewsManagement/NewsManagement";
+import StudentManagement from "./components/Admin/StudentManagement/StudentManagement";
+import StaffManagement from "./components/Admin/StaffManagement/StaffManagement";
 
 import Room from './components/Room'; // Import Room component
 import RoomDetailPage from "./pages/RoomDetailPage";
@@ -62,18 +55,11 @@ function App() {
           {/* Admin routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminHomePage />} />
-            <Route path="sinh-vien" element={<StudentManager />} />
-            <Route path="sinh-vien-yeu-cau" element={<StudentRequestManager />} />
-            <Route path="dien" element={<ElectricManager />} />
-            <Route path="thanh-toan" element={<PaymentManager />} />
-            <Route path="giuong" element={<BedManager />} />
-            <Route path="phong" element={<RoomManager />} />
-            <Route path="phan-bo-phong" element={<RoomAllocationManager />} />
-            <Route path="bang-tin" element={<NewsManager />} />
-            <Route path="chu-de" element={<TopicManager />} />
-            <Route path="StaffManager" element={<StaffManager />} />
-            <Route path="RoomTypeManager" element={<RoomTypeManager />} />
-            <Route path="RoomPaymentManager" element={<RoomPaymentManager />} />
+            <Route path="news-management" element={<NewsManagement />} />
+            <Route path="room-management" element={<RoomManagement />} />
+            <Route path="student-management" element={<StudentManagement />} />
+            <Route path="staff-management" element={<StaffManagement />} />
+            {/* Add other admin routes here */}
           </Route>
         </Routes>
       </Router>

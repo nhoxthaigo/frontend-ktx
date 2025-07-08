@@ -39,22 +39,14 @@ const AdminHomePage = () => {
       img: room,
     },
     {
-      label: "Quản Lý Loại Phòng",
-      path: "/admin/RoomTypeManager",
+      label: "Quản Lý Phòng",
+      path: "/admin/room-management",
       img: roomtype,
     },
-    { label: "Quản Lý Phòng", path: "/admin/phong", img: room1 },
-    { label: "Quản Lý Giường", path: "/admin/giuong", img: bed },
-
     {
       label: "Quản Lý Sinh Viên",
-      path: "/admin/sinh-vien",
+      path: "/admin/student-management",
       img: student,
-    },
-    {
-      label: "Quản Lý Phiếu Đăng Ký Sinh Viên",
-      path: "/admin/sinh-vien-yeu-cau",
-      img: register,
     },
     {
       label: "Quản Lý Điện",
@@ -71,26 +63,15 @@ const AdminHomePage = () => {
       path: "/admin/thanh-toan",
       img: payment
     },
-
-    {
-      label: "Quản Lý Phân Bổ Phòng",
-      path: "/admin/phan-bo-phong",
-      img: allocation,
-    },
     {
       label: "Quản Lý Bảng Tin",
-      path: "/admin/bang-tin",
+      path: "/admin/news-management",
       img: news
-    },
-    {
-      label: "Quản Lý Chủ Đề",
-      path: "/admin/chu-de",
-      img: topic
     },
   ];
 
   if (isAdmin) {
-    navItems.push({ label: "Quản Lý Nhân Viên", path: "/admin/StaffManager", img: staff });
+    navItems.push({ label: "Quản Lý Nhân Viên", path: "/admin/staff-management", img: staff });
   }
 
   return (

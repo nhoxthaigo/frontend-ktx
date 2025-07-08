@@ -12,7 +12,7 @@ class ElectricityService {
       API_ENDPOINTS.ELECTRICITY.RATES.GET_ALL,
       { params }
     );
-    return response.data;
+    return response.data; 
   }
 
   /**
@@ -36,7 +36,7 @@ class ElectricityService {
       API_ENDPOINTS.ELECTRICITY.ROOM_BILLS.GET_ALL,
       { params }
     );
-    return response.data;
+    return response.data; // Sửa lại: chỉ trả về response.data
   }
 
   /**

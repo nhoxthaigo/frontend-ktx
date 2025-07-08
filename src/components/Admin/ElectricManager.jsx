@@ -5,7 +5,7 @@ import { FaPlus, FaEdit, FaTrash, FaCalculator, FaCheck, FaDownload, FaEye, FaMo
 import { toast } from 'react-hot-toast';
 import BulkElectricityActions from './Electricity/BulkElectricityActions';
 import ElectricityStatisticsCards from './Electricity/ElectricityStatisticsCards';
-
+import { buildParams } from '../../utils/buildParams.util';
 const ElectricManager = () => {
   const [activeTab, setActiveTab] = useState('rates'); // rates, roomBills, studentBills, statistics
   const [loading, setLoading] = useState(false);
@@ -100,61 +100,79 @@ const ElectricManager = () => {
   const loadElectricityRates = async () => {
     setLoading(true);
     try {
-      const response = await electricityService.getElectricityRates({
-        page: pagination.page,
-        limit: pagination.limit
-      });
-      setElectricityRates(response.data || []);
+      const params = buildParams(
+        { page: pagination.page, limit: pagination.limit },
+        filters
+      );
+
+      const res = await electricityService.getElectricityRates(params);
+      console.log('Electricity Rates:', res);
+      setElectricityRates(res || []);
       setPagination(prev => ({
         ...prev,
-        total: response.meta?.total || 0,
-        totalPages: response.meta?.totalPages || 0
+        total: res.meta?.total || 0,
+        totalPages: res.meta?.totalPages || 0,
       }));
     } catch (err) {
       console.error('Error loading electricity rates:', err);
       toast.error('Không thể tải danh sách đơn giá điện');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const loadRoomBills = async () => {
     setLoading(true);
     try {
-      const response = await electricityService.getRoomElectricityBills({
-        page: pagination.page,
-        limit: pagination.limit,
-        ...filters
-      });
-      setRoomBills(response.data || []);
+      const params = buildParams(
+        { page: pagination.page, limit: pagination.limit },
+        filters                         // id_phong, trang_thai, tu_ngay, den_ngay
+      );
+
+      const res = await electricityService.getRoomElectricityBills(params);
+      console.log('Room Bills:', res);
+      setRoomBills(res || []);
       setPagination(prev => ({
         ...prev,
-        total: response.meta?.total || 0,
-        totalPages: response.meta?.totalPages || 0
+        total: res.meta?.total || 0,
+        totalPages: res.meta?.totalPages || 0,
       }));
-    } catch (error) {
+    } catch (err) {
+      console.error('Error loading room bills:', err);
       toast.error('Không thể tải danh sách hóa đơn phòng');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const loadStudentBills = async () => {
     setLoading(true);
     try {
-      const response = await electricityService.getStudentElectricityBills({
-        page: pagination.page,
-        limit: pagination.limit,
-        ...filters
-      });
-      setStudentBills(response.data || []);
+      // đổi tên khóa trang_thai_thanh_toan -> trang_thai cho API
+      const {
+        trang_thai_thanh_toan,
+        ...restFilters
+      } = filters;
+
+      const params = buildParams(
+        { page: pagination.page, limit: pagination.limit },
+        { ...restFilters, trang_thai: trang_thai_thanh_toan }
+      );
+
+      const res = await electricityService.getStudentElectricityBills(params);
+      console.log('Student Bills:', res);
+      setStudentBills(res || []);
       setPagination(prev => ({
         ...prev,
-        total: response.meta?.total || 0,
-        totalPages: response.meta?.totalPages || 0
+        total: res.meta?.total || 0,
+        totalPages: res.meta?.totalPages || 0,
       }));
-    } catch (error) {
+    } catch (err) {
+      console.error('Error loading student bills:', err);
       toast.error('Không thể tải danh sách hóa đơn sinh viên');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const loadStatistics = async () => {
@@ -227,7 +245,7 @@ const ElectricManager = () => {
 
   const handleFinalizeRoomBill = async (billId) => {
     if (!window.confirm('Hoàn thiện hóa đơn? Sau khi hoàn thiện sẽ không thể chỉnh sửa.')) return;
-    
+
     setLoading(true);
     try {
       await electricityService.finalizeElectricityBill(billId);
@@ -241,7 +259,7 @@ const ElectricManager = () => {
 
   const handleDeleteRoomBill = async (billId) => {
     if (!window.confirm('Xác nhận xóa hóa đơn?')) return;
-    
+
     setLoading(true);
     try {
       await electricityService.deleteRoomElectricityBill(billId);
@@ -353,7 +371,7 @@ const ElectricManager = () => {
     <div className="p-6 bg-white rounded-lg shadow-md">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Quản lý Tiền Điện</h2>
-        
+
         {/* Tab Navigation */}
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8">
@@ -366,11 +384,10 @@ const ElectricManager = () => {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
-                  activeTab === tab.key
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${activeTab === tab.key
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
               >
                 <tab.icon className="w-4 h-4" />
                 <span>{tab.label}</span>
@@ -460,7 +477,7 @@ const ElectricManager = () => {
                 <option key={room.id} value={room.id}>{room.ten_phong}</option>
               ))}
             </select>
-            
+
             <select
               value={filters.trang_thai}
               onChange={(e) => setFilters(prev => ({ ...prev, trang_thai: e.target.value }))}
@@ -674,7 +691,7 @@ const ElectricManager = () => {
       {activeTab === 'statistics' && (
         <div>
           <h3 className="text-lg font-semibold mb-6">Thống kê Tiền Điện</h3>
-          
+
           {loading ? (
             <div className="text-center py-4">Đang tải...</div>
           ) : (
@@ -720,7 +737,7 @@ const ElectricManager = () => {
                     step="0.01"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-1">Từ ngày</label>
                   <input
@@ -731,7 +748,7 @@ const ElectricManager = () => {
                     required
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-1">Đến ngày (Tùy chọn)</label>
                   <input
@@ -741,7 +758,7 @@ const ElectricManager = () => {
                     className="w-full border border-gray-300 rounded-md px-3 py-2"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-1">Ghi chú</label>
                   <textarea
@@ -752,7 +769,7 @@ const ElectricManager = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="flex justify-end space-x-2 mt-6">
                 <button
                   type="button"
@@ -797,7 +814,7 @@ const ElectricManager = () => {
                     ))}
                   </select>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-1">Từ ngày</label>
@@ -820,7 +837,7 @@ const ElectricManager = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-1">Số điện cũ</label>
@@ -845,7 +862,7 @@ const ElectricManager = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-1">Ghi chú</label>
                   <textarea
@@ -856,7 +873,7 @@ const ElectricManager = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="flex justify-end space-x-2 mt-6">
                 <button
                   type="button"
@@ -903,7 +920,7 @@ const ElectricManager = () => {
                 parseFloat(selectedStudentBill.so_tien_phai_tra) - parseFloat(selectedStudentBill.so_tien_da_tra || 0)
               )}</p>
             </div>
-            
+
             <form onSubmit={handlePayment}>
               <div className="space-y-4">
                 <div>
@@ -918,7 +935,7 @@ const ElectricManager = () => {
                     step="0.01"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-1">Phương thức thanh toán</label>
                   <select
@@ -933,7 +950,7 @@ const ElectricManager = () => {
                     <option value="credit_card">Thẻ tín dụng</option>
                   </select>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-1">Mã giao dịch</label>
                   <input
@@ -944,7 +961,7 @@ const ElectricManager = () => {
                     placeholder="Nhập mã giao dịch (nếu có)"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium mb-1">Ghi chú</label>
                   <textarea
@@ -956,7 +973,7 @@ const ElectricManager = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="flex justify-end space-x-2 mt-6">
                 <button
                   type="button"
@@ -992,11 +1009,11 @@ const ElectricManager = () => {
             >
               Trước
             </button>
-            
+
             <span className="px-3 py-2 bg-blue-500 text-white rounded-md">
               {pagination.page} / {pagination.totalPages}
             </span>
-            
+
             <button
               onClick={() => setPagination(prev => ({ ...prev, page: Math.min(prev.totalPages, prev.page + 1) }))}
               disabled={pagination.page === pagination.totalPages}
