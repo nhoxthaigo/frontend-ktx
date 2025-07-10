@@ -1,24 +1,13 @@
 import React, { useState } from 'react';
 import RoomAllocation from './RoomAllocation';
 import StudentManager from './StudentManager';
-import StudentRequestManager from './StudentRequestManager';
 const StudentManagement = () => {
-    const [activeTab, setActiveTab] = useState('studentreq');
+    const [activeTab, setActiveTab] = useState('students');
     return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">QUẢN LÝ PHÒNG</h2>
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">QUẢN LÝ SINH VIÊN</h2>
       <div className="border-b border-gray-200 mb-6">
         <nav className="-mb-px flex space-x-8">
-          <button
-            onClick={() => setActiveTab('studentreq')}
-            className={`py-2 px-1 border-b-2 font-medium text-lg ${
-              activeTab === 'studentreq'
-                ? 'border-orange-500 text-orange-600'
-                : 'border-transparent transition transform duration-200 text-gray-500 hover:text-orange-700 hover:border-orange-200'
-            }`}
-          >
-            Phiếu Đăng Ký Sinh Viên
-          </button>
           <button
             onClick={() => setActiveTab('students')}
             className={`py-2 px-1 border-b-2 font-medium text-lg ${
@@ -42,7 +31,6 @@ const StudentManagement = () => {
         </nav>
       </div>
       <div>
-        {activeTab === 'studentreq' && <StudentRequestManager />}
         {activeTab === 'students' && <StudentManager />}
         {activeTab === 'roomallocation' && <RoomAllocation />}
       </div>

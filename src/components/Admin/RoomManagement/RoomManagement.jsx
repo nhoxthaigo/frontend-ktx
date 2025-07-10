@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import RoomManager from './RoomManager';
 import RoomTypeManager from './RoomTypeManager';
 import BedManager from './BedManager';
+import RoomPaymentManager from './RoomPaymentManager';
 const RoomManagement = () => {
   const [activeTab, setActiveTab] = useState('rooms');
   return (
@@ -40,12 +41,25 @@ const RoomManagement = () => {
           >
             Giường
           </button>
+
+          <button
+            onClick={() => setActiveTab('payments')}
+            className={`py-2 px-1 border-b-2 font-medium text-lg ${
+              activeTab === 'payments'
+                ? 'border-orange-500 text-orange-600'
+                : 'border-transparent transition transform duration-200 text-gray-500 hover:text-orange-700 hover:border-orange-200'
+            }`}
+          >
+            Hóa Đơn Phòng Sinh Viên
+          </button>
         </nav>
       </div>
       <div>
         {activeTab === 'rooms' && <RoomManager />}
         {activeTab === 'roomTypes' && <RoomTypeManager />}
         {activeTab === 'beds' && <BedManager />}
+        {activeTab === 'payments' && <RoomPaymentManager />}
+
       </div>
     </div>
   );

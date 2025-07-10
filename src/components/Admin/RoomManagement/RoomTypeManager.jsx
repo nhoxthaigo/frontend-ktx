@@ -13,6 +13,7 @@ const RoomTypeManager = () => {
   const [roomTypes, setRoomTypes] = useState([]);
   const [filteredRoomTypes, setFilteredRoomTypes] = useState([]);
   const [searchTermName, setSearchTermName] = useState('');
+  const [searchTermSoNguoi, setSearchTermSoNguoi] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [editingRoomType, setEditingRoomType] = useState(null);
   const [currentRoomType, setCurrentRoomType] = useState(initialRoomTypeState);
@@ -44,8 +45,13 @@ const RoomTypeManager = () => {
         type.ten_loai?.toLowerCase().includes(searchTermName.toLowerCase())
       );
     }
+    if (searchTermSoNguoi) {
+      results = results.filter(type =>
+        String(type.so_giuong) === String(searchTermSoNguoi)
+      );
+    }
     setFilteredRoomTypes(results);
-  }, [searchTermName, roomTypes]);
+  }, [searchTermName, roomTypes, searchTermSoNguoi]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -118,13 +124,29 @@ const RoomTypeManager = () => {
       <div className=" flex justify-between items-center mb-4">
         {/* Filter + Add */}
         <div className="flex flex-col justify-between md:flex-row md:items-center md:space-x-4 w-full">
-          <input
+          <div className='md:space-x-4 space-y-2 mb-4 md:mb-0'>
+            <input
             type="text"
             placeholder="Lọc theo Tên Loại Phòng"
-            className="border border-gray-300 rounded-md px-3 py-2"
+            className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
             value={searchTermName}
             onChange={(e) => setSearchTermName(e.target.value)}
           />
+          <select
+            className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
+            value={searchTermSoNguoi}
+            onChange={(e) => setSearchTermSoNguoi(e.target.value)}
+          >
+            <option value="">Lọc Theo Số Giường</option>
+            {[...new Set(roomTypes.map(rt => rt.so_giuong))]
+              .filter(Boolean)
+              .sort((a, b) => a - b)
+              .map(soNguoi => (
+                <option key={soNguoi} value={soNguoi}>{soNguoi} Giường</option>
+              ))}
+          </select>
+          </div>
+          
           <div onClick={handleAddRoomType}>
             <AddButton />
           </div>
@@ -232,7 +254,7 @@ const RoomTypeManager = () => {
         ) : (
           <table className="min-w-full table-auto">
             <thead>
-              <tr className="bg-gray-50">
+              <tr className="bg-gray-200 shadow-sm">
                 <th className="px-4 py-2 text-left">ID</th>
                 <th className="px-4 py-2 text-left">Tên Loại Phòng</th>
                 <th className="px-4 py-2 text-left">Số Giường</th>
@@ -248,7 +270,7 @@ const RoomTypeManager = () => {
                 <tr key={roomType.id} className="border-t">
                   <td className="px-4 py-2">{roomType.id}</td>
                   <td className="px-4 py-2">{roomType.ten_loai}</td>
-                  <td className="px-4 py-2">{roomType.so_giuong}</td>
+                  <td className="px-4 py-2">{roomType.so_giuong} Giường</td>
                   <td className="px-4 py-2">{Number(roomType.gia_thue).toLocaleString('vi-VN')} VNĐ</td>
                   <td className="px-4 py-2">{roomType.dien_tich}</td>
                   <td className="px-4 py-2">{roomType.mo_ta || '-'}</td>

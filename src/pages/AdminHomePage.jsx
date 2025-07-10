@@ -44,24 +44,19 @@ const AdminHomePage = () => {
       img: roomtype,
     },
     {
+      label: "Quản Lý Yêu Cầu Đăng Ký KTX Sinh Viên",
+      path: "/admin/student-request-management",
+      img: register,
+    },
+    {
       label: "Quản Lý Sinh Viên",
       path: "/admin/student-management",
       img: student,
     },
     {
       label: "Quản Lý Điện",
-      path: "/admin/dien",
+      path: "/admin/electric-manager",
       img: electric
-    },
-    {
-      label: "Quản Lý Hóa Đơn Phòng",
-      path: "/admin/RoomPaymentManager",
-      img: roompayment
-    },
-    {
-      label: "Quản Lý Thanh Toán",
-      path: "/admin/thanh-toan",
-      img: payment
     },
     {
       label: "Quản Lý Bảng Tin",
@@ -83,7 +78,7 @@ const AdminHomePage = () => {
           </h1>
           <div className="w-[75px] h-1 bg-orange-500"></div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16 mt-[100px]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-16 mt-[100px]">
           {navItems.map((item) => (
             <div className="flex flex-col items-center" key={item.label}>
               <div

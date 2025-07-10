@@ -118,7 +118,7 @@ const StudentRequestManager = () => {
     setLoading(true);
     try {
       const res = await roomService.getAll();
-      const rooms = res.data?.rooms || [];
+      const rooms = res?.data?.rooms || [];
       const studentGender = (selectedRequest.Student?.phai || '').toString().trim().toLowerCase();
 
       const filteredRooms = rooms.filter((room) => {
@@ -148,7 +148,7 @@ const StudentRequestManager = () => {
       setLoading(true);
       try {
         const res = await roomService.getBeds(selectedRoomId);
-        const beds = res.data?.beds || [];
+        const beds = res?.data?.beds || [];
         const filteredBeds = beds.filter((bed) => bed.trang_thai === 'available');
         setAvailableBeds(filteredBeds);
       } catch {
@@ -231,23 +231,20 @@ const StudentRequestManager = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center mb-6 text-black">
-        Quản Lý Yêu Cầu Đăng Ký Ký Túc Xá
-      </h1>
-
+    <div>
       {/* --- Filter --- */}
-      <div className="mb-8 p-6 bg-white rounded-lg shadow-md flex justify-between items-center">
+      <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col md:flex-row md:items-center md:space-x-4 w-full">
+          <div className="md:space-x-4 space-y-2 mb-4">
           <input
             type="text"
             placeholder="Mã Sinh Viên hoặc Tên"
-            className="p-3 border border-gray-300 rounded-md w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
             value={searchTermStudentId}
             onChange={(e) => setSearchTermStudentId(e.target.value)}
           />
           <select
-            className="p-3 border border-gray-300 rounded-md w-full md:w-1/2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
             value={searchTermStatus}
             onChange={(e) => setSearchTermStatus(e.target.value)}
           >
@@ -258,6 +255,7 @@ const StudentRequestManager = () => {
               </option>
             ))}
           </select>
+          </div>
         </div>
         {/* Nút thêm ẩn đi để giữ layout */}
         <div className="opacity-0 pointer-events-none">
@@ -266,37 +264,37 @@ const StudentRequestManager = () => {
       </div>
 
       {/* --- Table --- */}
-      <div className="mb-8 p-6 bg-white rounded-lg shadow-md overflow-x-auto">
+      <div className=" bg-white overflow-x-auto">
         {loading ? (
           <p className="text-center text-gray-500">Đang tải dữ liệu...</p>
         ) : filteredRequests.length === 0 ? (
           <p className="text-center text-gray-500">Không tìm thấy yêu cầu nào.</p>
         ) : (
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-            <thead className="bg-gray-100">
+          <table className="min-w-full table-auto">
+            <thead className="bg-gray-200 shadow-sm">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left">
                   ID Phiếu
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left">
                   Mã Sinh Viên
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left">
                   Tên Sinh Viên
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left">
                   Ngày Đăng Ký
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left">
                   Ngày Bắt Đầu
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left">
                   Ngày Kết Thúc
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left">
                   Trạng Thái
                 </th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-center">
                   Thao Tác
                 </th>
               </tr>
@@ -304,33 +302,33 @@ const StudentRequestManager = () => {
             <tbody className="divide-y divide-gray-200">
               {filteredRequests.map((request) => (
                 <tr key={request.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-2">
                     {request.id}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-2">
                     {request.Student?.mssv || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-2">
                     {request.Student?.ten || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-2">
                     {new Date(request.ngay_dang_ky).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-2">
                     {new Date(request.ngay_bat_dau).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-2">
                     {request.ngay_ket_thuc
                       ? new Date(request.ngay_ket_thuc).toLocaleDateString()
                       : 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-2">
                     {getStatusDisplay(request.trang_thai)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-4 py-2 text-center">
                     <button
                       onClick={() => handleViewDetail(request)}
-                      className="w-[120px] h-[50px] bg-black text-white transition transform duration-100 hover:scale-105 hover:bg-blue-600 rounded-[50px]"
+                      className="w-[120px] h-[50px] bg-black text-white transition transform duration-100 hover:scale-105 hover:bg-orange-500 rounded-[50px]"
                       disabled={loading}
                     >
                       Xem Chi Tiết

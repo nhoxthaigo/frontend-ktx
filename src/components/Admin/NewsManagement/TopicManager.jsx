@@ -71,8 +71,8 @@ const TopicManager = () => {
     <div>
       {/* 1. Thanh lọc + Add */}
       <div className="flex justify-between items-center mb-4">
-        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 w-full">
-          <div className="space-x-4">
+        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 w-full justify-between">
+          <div className="md:space-x-4 space-y-2 mb-4 md:mb-0 ">
             <input
               className="border border-gray-300 rounded-md px-3 py-2 mb-2 md:mb-0"
               placeholder="Lọc theo Tên"
@@ -95,12 +95,12 @@ const TopicManager = () => {
 
       {/* 2. Form Add / Edit */}
       {(isAdding || editing) && (
-        <div className="mb-6 bg-gray-50 p-6 rounded-lg shadow max-w-xl">
-          <h3 className="text-lg font-semibold mb-4">
+        <div className="mb-6 bg-gray-50 p-6 rounded-lg shadow w-[80%] mx-auto">
+          <h3 className="text-2xl font-semibold mb-4 text-center">
             {editing ? "Cập Nhật Chủ Đề" : "Thêm Chủ Đề Mới"}
           </h3>
           {msg && <p className="mb-3 text-center text-red-600">{msg}</p>}
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 w-[60%] mx-auto">
             <input
               className="border border-gray-300 rounded-md px-3 py-2"
               placeholder="Tên Chủ Đề"
@@ -146,7 +146,7 @@ const TopicManager = () => {
           <div className="text-center py-4 text-gray-500">Không có chủ đề.</div>
         ) : (
           <table className="min-w-full table-auto">
-            <thead><tr className="bg-gray-50">
+            <thead><tr className="bg-gray-200 shadow-sm">
               <th className="px-4 py-2 text-left">ID</th>
               <th className="px-4 py-2 text-left">Tên Chủ Đề</th>
               <th className="px-4 py-2 text-left">Mô Tả</th>

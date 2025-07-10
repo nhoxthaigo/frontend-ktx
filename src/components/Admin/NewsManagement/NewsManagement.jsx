@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import NewsManager from './NewsManager';
 import TopicManager from './TopicManager';
 const NewsManagement = () => {
-      const [activeTab, setActiveTab] = useState('topics');
+  const [activeTab, setActiveTab] = useState('topics');
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">QUẢN LÝ BẢN TIN</h2>

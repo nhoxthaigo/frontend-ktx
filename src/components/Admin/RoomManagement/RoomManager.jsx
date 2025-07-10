@@ -141,16 +141,16 @@ const RoomManager = () => {
       {/* Filter + Add */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col justify-between md:flex-row md:items-center md:space-x-4 w-full">
-          <div className="space-x-4">
+          <div className="md:space-x-4 space-y-2 mb-4 md:mb-0">
             <input
               type="text"
               placeholder="Lọc theo Tên Phòng"
-              className="border border-gray-300 rounded-md px-3 py-2 mb-2 md:mb-0"
+              className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
               value={searchTermName}
               onChange={(e) => setSearchTermName(e.target.value)}
             />
             <select
-              className="border border-gray-300 rounded-md px-3 py-2 mb-2 md:mb-0"
+              className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
               value={searchTermRoomType}
               onChange={(e) => setSearchTermRoomType(e.target.value)}
             >
@@ -302,7 +302,7 @@ const RoomManager = () => {
         ) : (
           <table className="min-w-full table-auto">
             <thead>
-              <tr className="bg-gray-50">
+              <tr className="bg-gray-200 shadow-sm">
                 <th className="px-4 py-2 text-left">ID</th>
                 <th className="px-4 py-2 text-left">Tên Phòng</th>
                 <th className="px-4 py-2 text-left">Loại Phòng</th>

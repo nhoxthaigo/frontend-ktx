@@ -120,9 +120,9 @@ const RoomAllocation = () => {
       {/* top bar: search + add */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col md:flex-row md:items-center md:space-x-4 w-full justify-between">
-          <div className="">
+          <div className="md:space-x-4 space-y-2 mb-4">
             <input
-            className="border border-gray-300 rounded-md px-3 py-2 mb-2 md:mb-0"
+            className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
             placeholder="Tìm nhanh (SV, MSSV, Giường, Phòng...)"
             value={search} onChange={e=>setSearch(e.target.value)}
           />
@@ -193,7 +193,7 @@ const RoomAllocation = () => {
           <div className="text-center py-4 text-gray-500">Không có phân bổ.</div>
         ):(
           <table className="min-w-full table-auto">
-            <thead><tr className="bg-gray-50">
+            <thead><tr className="bg-gray-200 shadow-sm">
               {["MSSV","Tên SV","Giường","Phòng","Tầng","Bắt đầu","Kết thúc","Trạng thái","Thanh toán","Thao tác"].map(h=>(
                 <th key={h} className={`px-4 py-2 ${h==="Thao tác"?"text-center":"text-left"}`}>{h}</th>
               ))}

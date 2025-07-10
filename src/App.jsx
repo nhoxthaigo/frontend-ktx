@@ -17,6 +17,8 @@ import RoomManagement from "./components/Admin/RoomManagement/RoomManagement";
 import NewsManagement from "./components/Admin/NewsManagement/NewsManagement";
 import StudentManagement from "./components/Admin/StudentManagement/StudentManagement";
 import StaffManagement from "./components/Admin/StaffManagement/StaffManagement";
+import ElectricManager from "./components/Admin/ElectricManagement/ElectricManagement";
+import StudentRequestManagement from "./components/Admin/StudentRequestManagement/StudentRequestManagement";
 
 import Room from './components/Room'; // Import Room component
 import RoomDetailPage from "./pages/RoomDetailPage";
@@ -59,6 +61,8 @@ function App() {
             <Route path="room-management" element={<RoomManagement />} />
             <Route path="student-management" element={<StudentManagement />} />
             <Route path="staff-management" element={<StaffManagement />} />
+            <Route path="electric-manager" element={<ElectricManager />} />
+            <Route path="student-request-management" element={<StudentRequestManagement />} />
             {/* Add other admin routes here */}
           </Route>
         </Routes>

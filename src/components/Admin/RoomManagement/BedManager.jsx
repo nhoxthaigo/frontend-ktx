@@ -144,9 +144,9 @@ const BedManager = () => {
       {/* Filter Section */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col md:flex-row md:items-center md:space-x-4 w-full justify-between">
-          <div className="space-x-4">
+          <div className="md:space-x-4 space-y-2 mb-4 md:mb-0">
             <select
-              className="border border-gray-300 rounded-md px-3 py-2 mb-2 md:mb-0"
+              className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
               value={selectedRoomId}
               onChange={(e) => setSelectedRoomId(e.target.value)}
             >
@@ -160,7 +160,7 @@ const BedManager = () => {
             <input
               type="text"
               placeholder="Lọc theo Tên Giường"
-              className="border border-gray-300 rounded-md px-3 py-2 mb-2 md:mb-0"
+              className="p-3 border border-gray-300 rounded-md w-full md:w-[300px] focus:outline-none focus:ring-2 focus:ring-orange-500"
               value={searchTermName}
               onChange={(e) => setSearchTermName(e.target.value)}
               disabled={!selectedRoomId}
@@ -175,7 +175,7 @@ const BedManager = () => {
       {/* Form Add / Edit */}
       {(isAdding || editingBed) && (
         <div className="mb-6 bg-gray-50 p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">
+          <h3 className="text-2xl font-semibold mb-4">
             {editingBed ? "Cập Nhật Giường" : "Thêm Giường Mới"}
           </h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -234,7 +234,7 @@ const BedManager = () => {
         ) : (
           <table className="min-w-full table-auto">
             <thead>
-              <tr className="bg-gray-50">
+              <tr className="bg-gray-200 shadow-sm">
                 <th className="px-4 py-2 text-left">ID</th>
                 <th className="px-4 py-2 text-left">Tên Giường</th>
                 <th className="px-4 py-2 text-left">Trạng Thái</th>
